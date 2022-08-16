@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "convert-excel-to-json": "^1.7.0",
+    "nightmare": "^3.0.2",
+    "puppeteer": "^16.1.0"
+  }
+}

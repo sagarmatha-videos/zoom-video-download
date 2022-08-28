@@ -32,13 +32,22 @@
 # todo
  - close browser if all pending downloads are completed :: <currently: waits 10 minutes before closing browser after clicking on download button of last download link of the sheet>
  - track actual file being downloaded :: currently: assume downloaded after 3 minutes currently :: 
+ - use multiple tabs instead of multiple browsers for different sheets
  - download file name and metadata
- 
 
-# References:
+# Previous updates
+	- updated the resume function for video download and store links/error_message in file that got error while downloading so that we can download them seperately later
+	- address multiple sheets
+	- resume video doenload after colab restart with previous progress 
+		:: stores download_index of each sheet in progress_logs.json file
+	- Added  a lot of try-catch so that it hopefully continue downloading other links even if it got error in any one link
 
 # colab_code:
 https://colab.research.google.com/drive/17Erm5rypj9M_qiaGDY4t1m4H2N4n160d
+
+# -----------------
+# References:
+# -----------------
 
 # chromedriver
 https://chromedevtools.github.io/devtools-protocol/tot/Page/

@@ -3,16 +3,16 @@
  ## download: uses 'puppetter'
  ## reading excel file: uses ''
 
-`npm install`  ### to install packages
-`node app.js`  ### to run code <download videos>
+- `npm install`  ### to install packages
+- `node app.js`  ### to run code <download videos>
 
 # How to use:
 - update download_root -> to file you want downloads to be saved
 - update linksPath -> excel_file path you want to extract links from
 - puppeteer.launch({headless:false})	# to open headless mode <doesnot display browser>
 
-- nohup node app.js		# run in background :: outputs logs to nohup.out
-- node app.js			# run in foreground :: outputs logs to stdout/console
+- `nohup node app.js`		# run in background :: outputs logs to nohup.out
+- `node app.js`			# run in foreground :: outputs logs to stdout/console
 
 # working:
 - iterates through excel sheets and download links
@@ -23,11 +23,11 @@
 - wait 10 minutes before closing browser after after "last link's download button" for download to complete.
 
 # files generated:
-- screen_after_click_download.png
-- screen_before_click_download.png
-- nohup.out							# nodejs logs
-- error_logs.json					# try-catch error logs
-- progress_logs.json				# download progress counter
+- `screen_after_click_download.png`
+- `screen_before_click_download.png`
+- `nohup.out`                                                   # nodejs logs
+- `error_logs.json`                                             # try-catch error logs
+- `progress_logs.json`                                          # download progress counter
 
 # todo
  - close browser if all pending downloads are completed :: <currently: waits 10 minutes before closing browser after clicking on download button of last download link of the sheet>

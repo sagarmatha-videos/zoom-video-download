@@ -1,4 +1,9 @@
 
+https://colab.research.google.com/drive/17Erm5rypj9M_qiaGDY4t1m4H2N4n160d?usp=sharing
+
+{'problem':'difficult download traking'}
+
+
 # zoom video downloader (nodejs)
  ## download: uses 'puppetter'
  ## reading excel file: uses ''
@@ -7,6 +12,13 @@
 - `node app.js`  ### to run code <download videos>
 
 # How to use:
+- simplest way: use colab, run code serially :: recommended_version -> colab_app_v3.ipynb
+- pre-requisite: 
+	- a file called 'zoom_download' at path 'MyDrive/zoom_downloads/' which is root directory
+	- 'Fuse-links.xlsx' file in download_root path
+	
+
+
 - update download_root -> to file you want downloads to be saved
 - update linksPath -> excel_file path you want to extract links from
 - puppeteer.launch({headless:false})	# to open headless mode <doesnot display browser>
@@ -14,13 +26,25 @@
 - `nohup node app.js`		# run in background :: outputs logs to nohup.out
 - `node app.js`			# run in foreground :: outputs logs to stdout/console
 
-# working:
-- iterates through excel sheets and download links
+## working:
+- get download_links from excel file 'Fuse-links.xlsx'
 - opens one browser instance for each sheet and run them parallely
 - links_of_sheet = links that are not previously downloaded. lookup: 'progress_logs.json '
 - to download: goto zoom.us -> accept cookies, then iterate through video links -> enter password and click download
-- assume video is downloaded after 3 minutes and store 'download_index' and 'sheet_number' to file : 'progress_logs.json '
-- wait 10 minutes before closing browser after after "last link's download button" for download to complete.
+- assume video is downloaded after 30 seconds and store 'download_index' and 'sheet_number' to file : 'progress_logs.json '
+- wait 10 minutes before closing browser after after "last link's download button" for download to complete. (doesnt work)
+
+## errors
+- zoom frequently gives 401 which is unauthorized error (i.e. it detected bot)	:: solutions:
+	- script detect 401 error and exit
+	- puppeteer-extra-plugin-stealth :: helps in hiding puppeteer from detection
+
+- sometimes gives capatchas: paid soln: 2capatcha
+
+## would be helpful:
+	- premium colab : multiple notebooks running parrallely in background
+
+
 
 # files generated:
 - `screen_after_click_download.png`

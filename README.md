@@ -43,7 +43,7 @@ https://colab.research.google.com/drive/17Erm5rypj9M_qiaGDY4t1m4H2N4n160d?usp=sh
 
 ## would be helpful:
 	- premium colab : multiple notebooks running parrallely in background
-
+	- some download manager :: but was not a big problem
 
 
 # files generated:

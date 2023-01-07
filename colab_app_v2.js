@@ -32,7 +32,7 @@ const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha')
 //   RecaptchaPlugin({
 //     provider: {
 //       id: '2captcha',
-//       token: '' // REPLACE THIS WITH YOUR OWN 2CAPTCHA API KEY ⚡
+//       token: '76975554edb7dcdaeeb61b8e32240569' // REPLACE THIS WITH YOUR OWN 2CAPTCHA API KEY ⚡
 //     },
 //     visualFeedback: true // colorize reCAPTCHAs (violet = detected, green = solved)
 //   })
@@ -179,6 +179,7 @@ function progress_bar(current_progress, total, label){
 // for (let i=0;i<10000;i++ ){progress_bar(i,10000, 'count')} # test progress_bar
 
 
+
 const download_links = async (links, download_root, current_sheet, progress_stored_previoiusly) => {
   // initialize data progress logs v2
     // to_download = [...Array(links.length).keys()]
@@ -241,7 +242,7 @@ const download_links = async (links, download_root, current_sheet, progress_stor
           console.log(`\n link: ${current_link_index} not in downloada skipping...\n`)
           continue
         } else if (borrowed.indexOf(current_link_index) != -1){ // skip if already downloaded) {
-          console.log(`\n link: ${current_link_index} in borrowed skipping...\n`);
+          // console.log(`\n link: ${current_link_index} in borrowed skipping...\n`);
           continue;
           // skip if link is already in progress
         } 
@@ -299,7 +300,7 @@ const download_links = async (links, download_root, current_sheet, progress_stor
             eventsEnabled: true,
           })
           
-          /* test if download works
+          /*// test if download works
           try{await page.goto('https://media.istockphoto.com/photos/emoji-holding-loudspeaker-isolated-on-white-background-picture-id961333268?p=1');
             await delay(60000);// 60 sec delay
         } catch(err){console.log(err);}*/
@@ -347,7 +348,7 @@ const download_links = async (links, download_root, current_sheet, progress_stor
             // await async_wait_and_update_current_download_progress(180000, parseInt(current_link_index) + parseInt(progress_stored_previoiusly), current_sheet); // assume downloaded after 3 minutes
             
             await async_wait_and_update_current_download_progress(35000, borrowed , to_download)
-            await delay(randomInteger(35000, 8000)); // random delay betn 35 and 80 seconds after each download click
+            await delay(randomInteger(25000, 75000)); // random delay betn 35 and 80 seconds after each download click
           
             borrowed.splice(borrowed.indexOf(current_link_index), 1)  // remove link from borrowed
             // console.log(borrowed)
@@ -435,6 +436,7 @@ const download_links = async (links, download_root, current_sheet, progress_stor
     await browser.close();
 }
 
+
 // const auth_values = [{'url':'https://zoom.us/rec/download/KUl1-kXVTdIOH8ghAHDYVMXd1ZSf6eRcMnJ3m4gAZaUTPJryavrqub0ty8hzIiDGHbaWu02BCM5b-_bZ.tN6AJP4a9wIOcZJI', 'password':'Lt_j15r_'}];
 // download_it(auth_values)
 
@@ -479,10 +481,3 @@ try {
   // store error reading the link: link_path, error_message
   append_error_logs({linksPath:linksPath, error_msg: 'error reading links file', error_value: String(error)}, 'other_logs');
 }
-
-/*
-- zoom password submit showing two varients
-- zoom password input id: #passcode           previous: #password
-- zoom password submit  : #passcode_btn       previous: #submit
-- error message:          .zm-alert__content  previous: #error_msg
-*/

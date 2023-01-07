@@ -22,6 +22,8 @@ puppeteer.use(StealthPlugin())
 var fs = require('fs'); // to create folder if not exist // reference: https://colab.research.google.com/drive/168X6Zo0Yk2fzEJ7WDfY9Q_0UOEmHSrZc?usp=sharing
 const { ConsoleMessage } = require('puppeteer')
 var progress_stored_previoiusly = 0;
+// var borrowed = new Array();     // borrow link to download so that no link is downloaded twice
+// var to_download = new Array();  // links to download
 
 // add recaptcha plugin and provide it your 2captcha token (= their apiKey)
 // 2captcha is the builtin solution provider but others would work as well.
@@ -100,17 +102,14 @@ try {
 }
 }
 
-// load progress logs
-// data = {'borrowed':[0,1]}
-var data = load_json_data(download_root + 'progress_logs_v3.json');
-var borrowed = [...data.borrowed]       // links download in progress
-console.log('\nborrowed: ',borrowed)
 
 // update current progress of sheet after asynchronously waiting for download_time seconds. 
-let async_wait_and_update_current_download_progress =  async (how_long_after_to_assume_downloaded, borrowed) => {
+let async_wait_and_update_current_download_progress =  async (how_long_after_to_assume_downloaded, borrowed, to_download) => {
   setTimeout(function(){
-    save_json_data({'borrowed':[...borrowed]}, download_root + 'progress_logs_v3.json');
-    console.log('updated borrowed: ', borrowed)
+    console.log('to_download:', to_download)
+    console.log('borrowed: ', borrowed)
+    save_json_data({'borrowed':[...borrowed], 'to_download':[...to_download]}, download_root + 'progress_logs_v3.json');
+    console.log('saved...')
       // let current_date_ms = Date.parse(new Date());
       // console.log(`updated download index to: ${current_link_index} for sheet: ${current_sheet}`);
 
@@ -203,15 +202,6 @@ const download_links = async (links) => {
             let path = link['path']
             let password = link['password']
             let current_link_index = links.indexOf(link)
-            if (borrowed.indexOf(current_link_index) != -1){
-              // skip if borrowed
-              console.log(`\n link: ${current_link_index} in borrowed skipping...\n`);
-              continue;
-            } else {
-              // add link to borrowed list
-              borrowed.push(current_link_index);
-              save_json_data({'borrowed':[...borrowed]}, download_root + 'progress_logs_v3.json');
-            }
             progress_bar(current_link_index, links.length, 'download');  // displays progress of download
 
           if (url.slice(0,4) !='http') {
@@ -268,13 +258,10 @@ const download_links = async (links) => {
               // submit password
               await page.click('#passcode_btn');
               console.log(`downloading... link_index:${current_link_index}` + String(url));
-              
-              // update borrowed list
-              await async_wait_and_update_current_download_progress(35000, borrowed )
-              
-               // random delay betn 35 and 80 seconds after each download click  
-              await delay(randomInteger(35000, 80000));
+              await delay(randomInteger(35000, 80000)); // random delay betn 35 and 80 seconds after each download click  
             }
+
+            
           
           // screenshot before each delay :: 10 screenshots
           await page.screenshot({path: screenShotPath + current_link_index +'.png'});
@@ -341,10 +328,8 @@ try{
 
 /*
 - auto-find & download links not to download by folder_name & file_name
-- 'to_download_data_v3.json' stores url, path:<folder_name>, password
-- 'progress_logs_v3.json' stores index of links not downloaded :: not used anymore
 - removed solveRecaptchas
-- remove the concept of borrow
+- auto-download all borrowed links :: simply clear borrowed list and re-run the script
 - zoom password submit showing two varients
 - zoom password input id: #passcode           previous: #password
 - zoom password submit  : #passcode_btn       previous: #submit
